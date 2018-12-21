@@ -1,45 +1,43 @@
 const Todo = require('../models/todo.model');
+const express = require("express");
 
 	function getTodos(request,result){
-		Todo.find({}, function (err, todo) {
-			result.setHeader('Content-Type', 'application/json');
-	        result.sendStatus(todo);
+		Todo.find({}, function (error, todos) {
+			if (error) return result.status(500).send(error);
+					result.setHeader('Content-Type', 'application/json');
+	        result.send(todos);
 	    });
 	}
 
-	function createTodo(request,result){
+	function createTodo(request,result,next){
 		let todo = new Todo(
 	        {
-	            title: request.body.name,
+	            title: request.body.title,
 	            description: request.body.description,
 	            isCompleted: request.body.isCompleted
 	        });
-	            
+
 	    todo.save((error)=> {
-	     	if (error) console.log(error);
-	      	result.send(200);
+	     if (error) return result.status(500).send(error);
+	      	result.sendStatus(200);
 	    	});
 		}
 
-	function updateTodo(request,result){
+	function updateTodo(request,result,next){
 
-		console.log(request.params.id);
-
-	    Todo.findOneAndUpdate(request.params.id, {$set: request.body},(error, product) => {
-	     	if (error) console.log(error);
-	      	 result.send(200);
+	    Todo.findOneAndUpdate(request.params.id, {$set: request.body},(error) => {
+			     if (error) return result.status(500).send(error);
+	      	 	result.sendStatus(200);
 	    	});
 		}
 
-	function deleteTodo(request,result){
+	function deleteTodo(request,result,next){
 
-		console.log(request.params.id);
-
-	    Todo.findOneAndDelete(request.params.id,(error, product) => {
-	     	if (error) console.log(error);
-	      	 result.send(200);
+	    Todo.findOneAndDelete(request.params.id,(error) => {
+	     	 	if (error) return result.status(500).send(error);
+	      	result.sendStatus(200);
 	    	});
-		}		
+		}
 
 module.exports = {
 	getTodos:getTodos,

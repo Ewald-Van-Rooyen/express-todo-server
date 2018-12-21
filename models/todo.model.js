@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 let TodoSchema = mongoose.Schema({
 	title:{
-		type:String
+		type:String,
+		required: [true, 'YOU need da TITLES']
 	},
 	description:{
 		type:String
