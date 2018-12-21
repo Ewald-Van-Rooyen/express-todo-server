@@ -7,6 +7,9 @@ Serving on port 3000.
 npm install
 
 ## Run Project:
-node server
+node app
+
+## Run Tests:
+node mocha
 
 
